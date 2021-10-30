@@ -11,36 +11,8 @@
     <title>Gallery</title>
   </head>
   <body>
-	<input type="button" value="Refresh" onclick="getAll()">
-    <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Image</th>
-            <th scope="col">Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td id=td1_row_1>
-                <img src="https://i.wpimg.pl/985x0/m.autokult.pl/lamborghini-1819244-960--f4cca3c.jpg" class="img-responsive thumbnail ">
-            </td>
-            <td>
-                <button type="button" class="btn btn-danger" id=button_row_1>Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td id=td1_row_1>
-                <img src="https://auto-blog.pl/wp-content/uploads/2008/10/lamborghini-gallardo-lp-560-4.jpg" class="img-responsive thumbnail ">
-            </td>
-            <td>
-                <button type="button" class="btn btn-danger" id=button_row_2 onClick="deleteById(2)">Delete</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+	<input type="button" value="Refresh" onclick="tableCreate()">
+    
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -48,9 +20,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <script src="library.js"></script>
-    <script src="app.js"></script>
 	<script>
+	let json='[{"id":"xxxx","url":"https://static.remove.bg/remove-bg-web/194d453110e760e94498dbb94c5cfb329903342c/assets/start_remove-c851bdf8d3127a24e2d137a55b1b427378cd17385b01aec6e59d5d4b5f39d2ec.png"},{"id":"yyyy","url":"https://static.remove.bg/remove-bg-web/194d453110e760e94498dbb94c5cfb329903342c/assets/start_remove-c851bdf8d3127a24e2d137a55b1b427378cd17385b01aec6e59d5d4b5f39d2ec.png"}]';
+  const obj = JSON.parse(json);
+
 	function getAll(){
 	    console.log("start")
 		fetch('http://localhost:8080/api/v1/photos', {
@@ -61,7 +34,8 @@
 	}
 	 
 	function deleteById(id){
-		sendDeleteRequest()
+	//	sendDeleteRequest()
+		console.log(obj[0])
 	}
 	
 	function sendDeleteRequest(id){
@@ -74,6 +48,43 @@
 		console.log(data)
 		);
 	}
+
+  function tableCreate() {
+    const body = document.body,
+        tbl = document.createElement('table');
+    tbl.setAttribute("class","table table-striped")
+    createTableHeaders(tbl);
+    var tbl_body = tbl.createTBody();
+    createTableBody(tbl_body);
+      body.appendChild(tbl);
+  }
+	
+    function createTableHeaders(tbl){
+      var header = tbl.createTHead();
+      let row_header = header.insertRow(0);
+      let cell3 = row_header.insertCell(0);
+      cell3.setAttribute("scope","col");
+      cell3.innerHTML="<br>Buttons</br>"
+      let cell2 = row_header.insertCell(0);
+      cell2.setAttribute("scope","col");
+      cell2.innerHTML="<br>Image</br>"
+      let cell1 = row_header.insertCell(0);
+      cell1.setAttribute("scope","col");
+      cell1.innerHTML="<br>#</br>"
+    }
+
+    function createTableBody(tbl_body){
+      for (let i in obj) {
+        console.log(i);
+        var tr=tbl_body.insertRow(0);
+        let tcell3=tr.insertCell(0);
+        tcell3.innerHTML='<button type="button" class="btn btn-danger" id=' + obj[i].id + '_delete_button>Delete</button>';
+        let tcell2=tr.insertCell(0);
+        tcell2.innerHTML='<img src="'+ obj[i].url + '" class="img-responsive thumbnail ">';
+        let tcell1=tr.insertCell(0);
+        tcell1.innerHTML='<br>'+i+'</br>';
+      }
+    }
 	</script>
 
   </body>
