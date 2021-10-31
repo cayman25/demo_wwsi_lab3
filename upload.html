@@ -11,8 +11,29 @@
     <title>Upload</title>
   </head>
   <body>
-    <label for="formFileLg" class="form-label">Upload photo</label>
-    <input class="form-control form-control-lg" id="formFileLg" type="file" />
+    <form>
+      <label for="formFileLg" class="form-label">Upload photo</label>
+      <input class="form-control form-control-lg" id="fileInput" type="file" accept="image/png, image/jpeg"/>
+      <button type="button" class="btn btn-success" onclick="sendPhoto()">Send</button>
+    </form>
+    <script>
+      function sendPhoto(){
+        console.log("start");
+        var file=document.getElementById("fileInput").files[0];
+        sendPhotoToApi(file);
+      }
+
+      function sendPhotoToApi(file){
+        var data = new FormData();
+        data.append("file", file);
+        data.append("id", file.name);
+
+        fetch('http://localhost:8080/api/v1/photo', {
+          method: 'POST',
+          body: data
+        })
+      }
+    </script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -38,8 +38,9 @@ public class ApiController {
 
     private HttpHeaders addHeader(){
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Allow-Origin","*");
-        responseHeaders.set("Access-Control-Allow-Methods","GET, PUT, POST, DELETE, HEAD, OPTIONS");
+//        responseHeaders.set("Access-Control-Allow-Origin","localhost");
+//        responseHeaders.set("Access-Control-Allow-Methods","GET, PUT, POST, DELETE, HEAD, OPTIONS");
+//        responseHeaders.set("Access-Control-Allow-Credentials","true");
         return responseHeaders;
     }
 }

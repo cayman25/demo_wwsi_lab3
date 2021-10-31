@@ -17,7 +17,7 @@ public class AzureBlobService {
     public BlobContainerClient containerClient;
 
     private String connectionString="DefaultEndpointsProtocol=https;AccountName=mdrobotstorage;AccountKey=1/0OjukbTnJNW2SsVSoKBaRH0LfYyba6ui4bbOWg6+thPKexw3M3dzINGr74YSY7FaOQ5eFXEj8ygp/9MoomIQ==;EndpointSuffix=core.windows.net";
-    private String accessKey="1/0OjukbTnJNW2SsVSoKBaRH0LfYyba6ui4bbOWg6+thPKexw3M3dzINGr74YSY7FaOQ5eFXEj8ygp/9MoomIQ==";
+    private String accessKey=System.getenv("BLOB_ACCESS_KEY");
 
     @PostConstruct
     private void init(){
