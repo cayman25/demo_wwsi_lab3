@@ -2,6 +2,8 @@ package com.wwsi.demo;
 
 import com.wwsi.demo.models.BlobModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,21 +16,30 @@ public class ApiController {
     ApiService apiService;
 
     @GetMapping("api/v1/photos")
-    public Set<BlobModel> getAllPhotos(){
-        return apiService.getPhotos();
+    public ResponseEntity<Set<BlobModel>> getAllPhotos(){
+        return ResponseEntity.ok()
+                .headers(addHeader())
+                .body(apiService.getPhotos());
     }
 
     @PostMapping("api/v1/photo")
-    public String addPhoto(@RequestPart("id") String id, @RequestPart("file") MultipartFile file){
-        System.out.println(id);
+    public ResponseEntity<String> addPhoto(@RequestPart("id") String id, @RequestPart("file") MultipartFile file){
         apiService.uploadPhoto(id,file);
-        return "ssss";
+        return ResponseEntity.ok()
+                .headers(addHeader()).body("Success");
     }
 
     @DeleteMapping("api/v1/photo/{id}")
-    public String deletePhoto(@PathVariable String id){
+    public ResponseEntity<String> deletePhoto(@PathVariable String id){
         apiService.deletePhoto(id);
-        return "Success";
+        return ResponseEntity.ok()
+                .headers(addHeader()).body("Success");
     }
 
+    private HttpHeaders addHeader(){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin","*");
+        responseHeaders.set("Access-Control-Allow-Methods","GET, PUT, POST, DELETE, HEAD, OPTIONS");
+        return responseHeaders;
+    }
 }
